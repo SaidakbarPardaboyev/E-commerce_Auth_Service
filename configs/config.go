@@ -1,6 +1,7 @@
-package config
+package configs
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -19,10 +20,10 @@ type Config struct {
 	ServiceName     string
 }
 
-func Load() (*Config, error) {
+func Load() *Config {
 	err := godotenv.Load(".env")
 	if err != nil {
-		return nil, err
+		fmt.Println(".env file not found")
 	}
 
 	cfg := Config{}
@@ -36,7 +37,7 @@ func Load() (*Config, error) {
 	cfg.AuthRouterPort = cast.ToString(getOrReturnDefault("AUTH_ROUTER_PORT", ":2222"))
 	cfg.ServiceName = cast.ToString(getOrReturnDefault("SERVICE_NAME", "nothing"))
 
-	return &cfg, nil
+	return &cfg
 }
 
 func getOrReturnDefault(key string, defaultValue interface{}) interface{} {
